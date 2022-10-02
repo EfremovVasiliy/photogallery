@@ -16,6 +16,11 @@ class PostService
 
     public function getPostList(): string
     {
-        return 'post list';
+        return $this->postRepository->getPosts();
+    }
+
+    public function findPostById(int $id)
+    {
+        return $this->postRepository->find($id);
     }
 }

@@ -2,18 +2,21 @@
 
 namespace App\Services\PostService\Repositories;
 
+use App\Models\Post;
 use App\Services\PostService\Repositories\PostRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class PostDatabaseRepository implements PostRepositoryInterface
 {
-
-    public function find()
+    public function find(int $id)
     {
-        // TODO: Implement find() method.
+        $post = DB::table('posts')->where('id', $id)->first();
+
+        return $post;
     }
 
-    public function getPosts()
+    public function getPosts(): string
     {
-        // TODO: Implement getPosts() method.
+        return DB::table('posts')->get();
     }
 }
