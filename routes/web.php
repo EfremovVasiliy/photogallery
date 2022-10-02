@@ -33,4 +33,6 @@ Route::get('/test', function(Request $request) {
     return response()->json($usersNames);
 })->middleware(['auth']);
 
+Route::resource('post', \App\Http\Controllers\PostController::class);
+
 require __DIR__.'/auth.php';
