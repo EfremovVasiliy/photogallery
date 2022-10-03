@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Services\PostService\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,15 +15,16 @@ class PostController extends Controller
     {
         $this->postService = $postService;
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return string
+     * @return Response
      */
-    public function index(): string
+    public function index(): Response
     {
         $postList = $this->postService->getPostList();
-        return $postList;
+        return response()->view('post.index', ['postList' => $postList]);
     }
 
     /**
@@ -52,20 +54,19 @@ class PostController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show(int $id)
+    public function show(int $id): Response
     {
         $post = $this->postService->findPostById($id);
-
-        return $post;
+        return response()->view('post.show', ['post' => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         //
     }
@@ -74,10 +75,10 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         //
     }

@@ -19,20 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+require __DIR__.'/auth.php';
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', function(Request $request) {
-    $id = $request->user()->getAuthIdentifier();
-    $user = User::all();
-    $usersNames = [];
-    foreach ($user as $item) {
-        $usersNames[] = $item->name;
-    }
-    return response()->json($usersNames);
-})->middleware(['auth']);
-
 Route::resource('post', \App\Http\Controllers\PostController::class);
-
-require __DIR__.'/auth.php';

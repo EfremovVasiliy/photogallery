@@ -14,7 +14,7 @@ class PostService
         $this->postRepository = $postRepository;
     }
 
-    public function getPostList(): string
+    public function getPostList()
     {
         return $this->postRepository->getPosts();
     }
