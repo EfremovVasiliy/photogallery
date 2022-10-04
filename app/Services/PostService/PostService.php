@@ -23,4 +23,19 @@ class PostService
     {
         return $this->postRepository->find($id);
     }
+
+    public function createPost(Request $request)
+    {
+        $this->postRepository->create($request);
+    }
+
+    public function updatePost(Request $request, int $id)
+    {
+        $this->postRepository->update($request, $id);
+    }
+
+    public function deletePost(int $id)
+    {
+        $this->postRepository->delete($id);
+    }
 }

@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Services\PostService\PostService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 
 class PostController extends Controller
 {
@@ -30,22 +35,23 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return void
+     * @return Response
      */
     public function create()
     {
-        //
+        return response()->view('post.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param CreatePostRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request): RedirectResponse
     {
-        //
+        $this->postService->createPost($request);
+        return redirect('/post');
     }
 
     /**
@@ -68,29 +74,33 @@ class PostController extends Controller
      */
     public function edit(int $id)
     {
-        //
+        $post = $this->postService->findPostById($id);
+//        dd($post);
+        return response()->view('post.update', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param UpdatePostRequest $request
      * @param int $id
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(UpdatePostRequest $request, int $id)
     {
-        //
+        $this->postService->updatePost($request, $id);
+        return redirect("/post/{$id}");
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $this->postService->deletePost($id);
+        return redirect('/post');
     }
 }

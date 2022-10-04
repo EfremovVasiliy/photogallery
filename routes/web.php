@@ -25,4 +25,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('post', \App\Http\Controllers\PostController::class);
+Route::resource('post', \App\Http\Controllers\PostController::class)->middleware(['auth']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
