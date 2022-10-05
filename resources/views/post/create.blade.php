@@ -7,9 +7,9 @@ use Collective\Html\FormFacade as Form;
 @extends('layouts.app')
 @section('content')
     <div class="m-md-4">
-    <h1>create post</h1>
+    <h1>Create post</h1>
 
-    {!! Form::open(['route' => 'post.store']) !!}
+    {!! Form::open(['route' => 'post.store', 'files' => true]) !!}
     @csrf
 
         <div class="col-lg-4">
@@ -18,8 +18,12 @@ use Collective\Html\FormFacade as Form;
                 {!! Form::input('text', 'title', null, ['class' => 'form-control']) !!}
             </div>
             <div class="form-group mb-3">
-                {!! Form::label('Content') !!}
-                {!! Form::input('text', 'content', null, ['class' => 'form-control']) !!}
+                {!! Form::label('Description') !!}
+                {!! Form::input('text', 'description', null, ['class' => 'form-control']) !!}
+            </div>
+            <div class="form-group mb-3">
+                {!! Form::label('Photo') !!}
+                {!! Form::input('file', 'file', null, ['class' => 'form-control']) !!}
             </div>
             <div class="form-group mb-3">
                 {!! Form::submit('Create Post', ['class' => 'btn btn-primary']) !!}

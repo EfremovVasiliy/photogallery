@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -50,6 +51,7 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request): RedirectResponse
     {
+//        dd($request);
         $this->postService->createPost($request);
         return redirect('/post');
     }
@@ -100,7 +102,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $this->postService->deletePost($id);
+        $filename = $this->postService->deletePost($id);
+        unlink(public_path('/storage/'. $filename));
+        Storage::delete($filename);
         return redirect('/post');
     }
 }

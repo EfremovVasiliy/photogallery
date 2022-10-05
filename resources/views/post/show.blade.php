@@ -11,7 +11,8 @@
         <div class="col-lg-6 m-auto">
             <h2>{{$post->title}}</h2>
             <small>{{$post->user_id}}</small>
-            <p>{{$post->content}}</p>
+            <p>{{$post->description}}</p>
+            <img class="img-fluid mb-3" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->description }}">
             <form method="post" action="{{ route('post.destroy', $post->id) }}">
                 @method('DELETE')
                 @csrf

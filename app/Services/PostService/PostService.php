@@ -4,6 +4,7 @@ namespace App\Services\PostService;
 
 use App\Services\PostService\Repositories\PostRepositoryInterface;
 use Illuminate\Http\Request;
+use League\Flysystem\Filesystem;
 
 class PostService
 {
@@ -24,18 +25,19 @@ class PostService
         return $this->postRepository->find($id);
     }
 
-    public function createPost(Request $request)
+    public function createPost(Request $request): void
     {
-        $this->postRepository->create($request);
+        $fileName = $request->file('file')->store('uploads', 'public');
+        $this->postRepository->create($request, $fileName);
     }
 
-    public function updatePost(Request $request, int $id)
+    public function updatePost(Request $request, int $id): void
     {
         $this->postRepository->update($request, $id);
     }
 
-    public function deletePost(int $id)
+    public function deletePost(int $id): string
     {
-        $this->postRepository->delete($id);
+        return $this->postRepository->delete($id);
     }
 }

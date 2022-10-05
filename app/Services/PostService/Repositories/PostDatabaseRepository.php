@@ -27,12 +27,13 @@ class PostDatabaseRepository implements PostRepositoryInterface
         return $this->post::all();
     }
 
-    public function create(Request $request)
+    public function create(Request $request, string $fileName)
     {
         $this->post::create([
             'user_id' => $request->user()->id,
             'title' => $request->input('title'),
-            'content' => $request->input('content'),
+            'description' => $request->input('description'),
+            'file_path' => $fileName
         ]);
     }
 
@@ -40,13 +41,15 @@ class PostDatabaseRepository implements PostRepositoryInterface
     {
         $post = $this->post::find($id);
         $post->title = $request->input('title');
-        $post->content = $request->input('content');
+        $post->description = $request->input('description');
         $post->save();
     }
 
-    public function delete(int $id)
+    public function delete(int $id): string
     {
         $post = $this->post::find($id);
+        $filename = $post->file_path;
         $post->delete();
+        return $filename;
     }
 }

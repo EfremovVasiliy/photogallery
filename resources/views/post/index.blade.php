@@ -10,7 +10,8 @@
             @foreach($postList as $post)
                 <h3><a href={{ url("/post/{$post->id}") }}>{{$post->title}}</a></h3>
                 <small>{{$post->user_id}}</small>
-                <p>{{$post->content}}</p>
+                <p>{{$post->description}}</p>
+                <img class="img-fluid" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->description }}">
                 <hr>
             @endforeach
         </div>
