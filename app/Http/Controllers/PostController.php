@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\IllegalActException;
-use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\Post\CreatePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use App\Services\PostService\PostService;
 use Illuminate\Contracts\Foundation\Application;

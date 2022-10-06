@@ -18,10 +18,10 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->titleFemale(),
-            'user_id' => 1,
+            'title' => fake()->text(30),
+            'user_id' => mt_rand(1, 10),
             'description' => fake()->text(130),
-            'file_path' => 'uploads/bCiSS56DylMDuE8roRkm4tzWOIlYn5qUDyTl9AVU.jpg'
+            'file_path' => 'uploads/dLll55WVKlTbEAGyTi9X5dB1iLDoVxFC1B3yiXH8.jpg'
         ];
     }
 }

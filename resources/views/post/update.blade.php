@@ -19,7 +19,7 @@ use Collective\Html\FormFacade as Form;
             </div>
             <div class="form-group mb-3">
                 {!! Form::label('Content') !!}
-                {!! Form::input('text', 'content', $post->description, ['class' => 'form-control']) !!}
+                {!! Form::input('text', 'description', $post->description, ['class' => 'form-control']) !!}
             </div>
             <div class="form-group mb-3">
                 {!! Form::submit('Update Post', ['class' => 'btn btn-primary']) !!}
