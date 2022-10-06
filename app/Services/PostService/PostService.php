@@ -2,6 +2,7 @@
 
 namespace App\Services\PostService;
 
+use App\Exceptions\IllegalActException;
 use App\Services\PostService\Repositories\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use League\Flysystem\Filesystem;
@@ -36,8 +37,17 @@ class PostService
         $this->postRepository->update($request, $id);
     }
 
-    public function deletePost(int $id): string
+    /**
+     * @throws IllegalActException
+     */
+    public function deletePost(Request $request, int $id): string
     {
-        return $this->postRepository->delete($id);
+        $post = $this->findPostById($id);
+        if ($request->user()->id === $post->user_id) {
+            $filename = $post->file_path;
+            $post->delete();
+            return $filename;
+        }
+        throw new IllegalActException('Attempt to delete another\'s data');
     }
 }

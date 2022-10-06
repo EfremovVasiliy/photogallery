@@ -17,39 +17,48 @@ class PostDatabaseRepository implements PostRepositoryInterface
         $this->post = $post;
     }
 
-    public function find(int $id)
+    /**
+     * @param int $id
+     * @return Post
+     */
+    public function find(int $id): Post
     {
         return $this->post::find($id);
     }
 
+    /**
+     * @return Collection
+     */
     public function getPosts(): Collection
     {
         return $this->post::all();
     }
 
-    public function create(Request $request, string $fileName)
+    /**
+     * @param Request $request
+     * @param string $filename
+     * @return void
+     */
+    public function create(Request $request, string $filename): void
     {
         $this->post::create([
             'user_id' => $request->user()->id,
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'file_path' => $fileName
+            'file_path' => $filename
         ]);
     }
 
-    public function update(Request $request, int $id)
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return void
+     */
+    public function update(Request $request, int $id): void
     {
         $post = $this->post::find($id);
         $post->title = $request->input('title');
         $post->description = $request->input('description');
         $post->save();
-    }
-
-    public function delete(int $id): string
-    {
-        $post = $this->post::find($id);
-        $filename = $post->file_path;
-        $post->delete();
-        return $filename;
     }
 }

@@ -10,5 +10,4 @@ interface PostRepositoryInterface
     public function getPosts();
     public function create(Request $request, string $filename);
     public function update(Request $request, int $id);
-    public function delete(int $id);
 }

@@ -13,11 +13,13 @@
             <small>{{$post->user_id}}</small>
             <p>{{$post->description}}</p>
             <img class="img-fluid mb-3" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->description }}">
-            <form method="post" action="{{ route('post.destroy', $post->id) }}">
-                @method('DELETE')
-                @csrf
-                <input type="submit" value="Delete post" class="btn btn-danger">
-            </form>
+            @if(request()->user()->id === $post->user_id)
+                <form method="post" action="{{ route('post.destroy', $post->id) }}">
+                    @method('DELETE')
+                    @csrf
+                    <input type="submit" value="Delete post" class="btn btn-danger">
+                </form>
+            @endif
         </div>
     </div>
 @endsection

@@ -30,10 +30,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $file_path
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereFilePath($value)
+ * @property-read \App\Models\User|null $user
  */
 class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = ['title', 'description', 'file_path', 'user_id'];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

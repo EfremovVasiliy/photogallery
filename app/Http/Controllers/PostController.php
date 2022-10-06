@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\IllegalActException;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
@@ -51,7 +52,6 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request): RedirectResponse
     {
-//        dd($request);
         $this->postService->createPost($request);
         return redirect('/post');
     }
@@ -97,12 +97,14 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return Application|Redirector|RedirectResponse
+     * @throws IllegalActException
      */
-    public function destroy($id)
+    public function destroy(Request $request, int $id)
     {
-        $filename = $this->postService->deletePost($id);
+        $filename = $this->postService->deletePost($request, $id);
         unlink(public_path('/storage/'. $filename));
         Storage::delete($filename);
         return redirect('/post');
