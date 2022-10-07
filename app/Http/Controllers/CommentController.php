@@ -18,15 +18,18 @@ class CommentController extends Controller
     public function create(CreateCommentRequest $request)
     {
         $this->commentService->create($request);
+        return redirect()->back();
     }
 
     public function update(Request $request)
     {
-
+        $this->commentService->update($request, 1);
+        return redirect()->back();
     }
 
     public function delete(Request $request)
     {
-
+        $this->commentService->delete($request);
+        return redirect()->back();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\IllegalActException;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
-use App\Models\Post;
+use App\Services\CommentService\CommentService;
 use App\Services\PostService\PostService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     private PostService $postService;
+    private CommentService $commentService;
 
-    public function __construct(PostService $postService)
+    public function __construct(PostService $postService, CommentService $commentService)
     {
         $this->postService = $postService;
+        $this->commentService = $commentService;
     }
 
     /**
@@ -65,7 +67,8 @@ class PostController extends Controller
     public function show(int $id): Response
     {
         $post = $this->postService->findPostById($id);
-        return response()->view('post.show', ['post' => $post]);
+        $comments = $this->commentService->getCommentsByPostId($id);
+        return response()->view('post.show', ['post' => $post, 'comments' => $comments]);
     }
 
     /**
@@ -91,7 +94,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, int $id)
     {
         $this->postService->updatePost($request, $id);
-        return redirect("/post/{$id}");
+        return redirect(route('post.show', $id));
     }
 
     /**
