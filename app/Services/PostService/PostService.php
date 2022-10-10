@@ -32,8 +32,12 @@ class PostService
         $this->postRepository->create($request, $fileName);
     }
 
+    /**
+     *
+     */
     public function updatePost(Request $request, int $id): void
     {
+        $post = $this->findPostById($id);
         $this->postRepository->update($request, $id);
     }
 

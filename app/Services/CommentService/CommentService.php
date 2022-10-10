@@ -2,8 +2,10 @@
 
 namespace App\Services\CommentService;
 
+use App\Services\CommentService\Objects\CommentDTO;
 use App\Services\CommentService\Repositories\CommentRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class CommentService
 {
@@ -14,23 +16,64 @@ class CommentService
         $this->commentRepository = $commentRepository;
     }
 
-    public function getCommentsByPostId(int $id)
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function getCommentsByPostId(int $id): Collection
     {
-        return $this->commentRepository->getCommentsByPostId($id);
+        $collection = $this->commentRepository->getCommentsByPostId($id);
+        return $this->generateCommentDTOCollection($collection);
     }
 
-    public function create(Request $request): void
+    /**
+     * @param Request $request
+     * @return Collection
+     */
+    public function create(Request $request): Collection
     {
-        $this->commentRepository->create($request);
+        $postId = $this->commentRepository->create($request);
+        return $this->getCommentsByPostId($postId);
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return void
+     */
     public function update(Request $request, int $id): void
     {
         $this->commentRepository->update($request, $id);
     }
 
-    public function delete(Request $request): void
+    /**
+     * @param Request $request
+     * @return Collection
+     */
+    public function delete(Request $request): Collection
     {
-        $this->commentRepository->delete($request->input('id'));
+        $postId = $this->commentRepository->delete($request->json('commentId'));
+        return $this->getCommentsByPostId($postId);
+    }
+
+    /**
+     * @param Collection $collection
+     * @return Collection
+     */
+    private function generateCommentDTOCollection(Collection $collection): Collection
+    {
+        $comments = collect();
+        foreach ($collection as $item) {
+            $comment = new CommentDTO(
+                $item->id,
+                request()->user()->id,
+                $item->comment_text,
+                $item->user->name,
+                $item->user->id,
+                $item->created_at
+            );
+            $comments->push($comment);
+        }
+        return $comments;
     }
 }

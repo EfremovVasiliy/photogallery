@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
 Route::resource('post', \App\Http\Controllers\PostController::class)->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/comment_create', 'App\Http\Controllers\CommentController@create')->name('comment.create');
+    Route::post('/comment-create', 'App\Http\Controllers\CommentController@create')->name('comment.create');
     Route::put('/comment-update', 'App\Http\Controllers\CommentController@update')->name('comment.update');
     Route::delete('/comment-delete', 'App\Http\Controllers\CommentController@delete')->name('comment.delete');
 });

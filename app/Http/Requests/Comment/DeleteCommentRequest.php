@@ -5,14 +5,14 @@ namespace App\Http\Requests\Comment;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CreateCommentRequest extends FormRequest
+class DeleteCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::check();
     }
@@ -20,8 +20,7 @@ class CreateCommentRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'comment' => request()->json('commentText'),
-            'post_id' => request()->json('postId')
+            'comment_id' => request()->json('commentId')
         ]);
     }
 
@@ -30,11 +29,10 @@ class CreateCommentRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'comment' => 'required|string',
-            'post_id' => 'required|int'
+            'comment_id' => 'required'
         ];
     }
 }

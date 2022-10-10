@@ -55,7 +55,7 @@ class PostController extends Controller
     public function store(CreatePostRequest $request): RedirectResponse
     {
         $this->postService->createPost($request);
-        return redirect('/post');
+        return redirect(route('post.index'));
     }
 
     /**
@@ -75,13 +75,15 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return Response|RedirectResponse
      */
-    public function edit(int $id)
+    public function edit(int $id): Response | RedirectResponse
     {
         $post = $this->postService->findPostById($id);
-//        dd($post);
-        return response()->view('post.update', ['post' => $post]);
+        if (request()->user()->id === $post->user_id) {
+            return response()->view('post.update', ['post' => $post]);
+        }
+        return redirect(route('post.index'));
     }
 
     /**
@@ -110,6 +112,6 @@ class PostController extends Controller
         $filename = $this->postService->deletePost($request, $id);
         unlink(public_path('/storage/'. $filename));
         Storage::delete($filename);
-        return redirect('/post');
+        return redirect(route('post.index'));
     }
 }

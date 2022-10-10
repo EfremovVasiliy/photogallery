@@ -3,6 +3,7 @@
 namespace App\Services\CommentService\Repositories;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -17,16 +18,18 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
 
     public function getCommentsByPostId($id): Collection
     {
-        return $this->comment::all()->where('post_id', $id);
+        return $this->comment::with('user')->where('post_id', $id)->get();
     }
 
-    public function create(Request $request): void
+    public function create(Request $request): int
     {
         $this->comment::create([
             'user_id' => $request->user()->id,
-            'post_id' => $request->input('post_id'),
-            'comment_text' => $request->input('comment')
+            'post_id' => $request->json('postId'),
+            'comment_text' => $request->json('commentText'),
         ]);
+
+        return $request->json('postId');
     }
 
     public function update(Request $request, int $id)
@@ -37,6 +40,9 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
     public function delete($id)
     {
         $comment = $this->comment::find($id);
+        $postId = $comment->post_id;
         $comment->delete();
+
+        return $postId;
     }
 }

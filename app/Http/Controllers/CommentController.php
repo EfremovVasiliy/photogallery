@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\CreateCommentRequest;
+use App\Http\Requests\Comment\DeleteCommentRequest;
 use App\Services\CommentService\CommentService;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,7 @@ class CommentController extends Controller
 
     public function create(CreateCommentRequest $request)
     {
-        $this->commentService->create($request);
-        return redirect()->back();
+        return response()->json($this->commentService->create($request));
     }
 
     public function update(Request $request)
@@ -27,9 +27,8 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Request $request)
+    public function delete(DeleteCommentRequest $request)
     {
-        $this->commentService->delete($request);
-        return redirect()->back();
+        return $this->commentService->delete($request);
     }
 }
