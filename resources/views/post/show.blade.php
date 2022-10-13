@@ -23,13 +23,13 @@
             <div class="comment-field">
                 @if($comments)
                     @foreach($comments as $comment)
-                        <div class="comment-item">
+                        <div class="comment-item-{{ $comment->id }}">
                             <div class="d-flex justify-content-between">
                                 <small>{{ $comment->authorName }}</small>
                                 @if($comment->userId === $comment->authorId)
                                     <div class="actions d-flex justify-content-between mb-1">
                                         <small class="me-1">
-                                            <form id="comment-update-form"  action="{{ route('comment.update')  }}">
+                                            <form class="comment-update-form" action="{{ route('comment.update')  }}">
                                                 @method('PUT')
                                                 @csrf
                                                 <input data-comment-id="{{ $comment->id }}" type="hidden" name="id">
@@ -37,7 +37,8 @@
                                             </form>
                                         </small>
                                         <small class="">
-                                            <form class="comment-delete-form" action="{{ route('comment.delete')  }}" method="post">
+                                            <form class="comment-delete-form" action="{{ route('comment.delete')  }}"
+                                                  method="post">
                                                 @method('DELETE')
                                                 @csrf
                                                 <input data-comment-id="{{ $comment->id }}" type="hidden" name="id">
@@ -47,7 +48,14 @@
                                     </div>
                                 @endif
                             </div>
-                            <p>{{ $comment->commentText }}</p>
+                            <p class='comment-id-{{ $comment->id }}'>{{ $comment->commentText }}</p>
+                            <div class="visually-hidden overflow-hidden">
+                                <textarea id="comment_textarea-update" placeholder="Your comment" name="comment" rows="2" class="form-control">{{ $comment->commentText }}</textarea>
+                                <div class="d-flex justify-content-around mt-2">
+                                    <button class="edit btn btn-outline-primary">Edit</button>
+                                    <button class="cancel btn btn-outline-danger">Cancel</button>
+                                </div>
+                            </div>
                         </div>
                         <hr>
                     @endforeach
@@ -58,7 +66,8 @@
                 <form class="comment-form" action="{{ route('comment.create') }}" method="post">
                     @csrf
                     <div class="w-100">
-                        <textarea id="comment_textarea" placeholder="Your comment" name="comment" rows="2" class="form-control"></textarea>
+                        <textarea id="comment_textarea-create" placeholder="Your comment" name="comment" rows="2"
+                                  class="form-control"></textarea>
                         <input type="hidden" id="post_id" name="post_id" value="{{ $post->id }}"><br>
                     </div>
 

@@ -42,7 +42,14 @@ export default function createCommentField(data) {
                     <small>${item.authorName}</small>
                     ${forms}
                 </div>
-                <p>${item.commentText}</p>
+                <p class="comment-id-${item.id}">${item.commentText}</p>
+                <div class="visually-hidden overflow-hidden">
+                    <textarea id="comment_textarea-update" placeholder="Your comment" name="comment" rows="2" class="form-control">${item.commentText}</textarea>
+                    <div class="d-flex justify-content-around mt-2">
+                        <button class="edit btn btn-outline-primary">Edit</button>
+                        <button class="cancel btn btn-outline-danger">Cancel</button>
+                    </div>
+                </div>
             </div>
             <hr>
         `;

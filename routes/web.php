@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/comment-delete', 'App\Http\Controllers\CommentController@delete')->name('comment.delete');
 });
 
+Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name('user.show');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

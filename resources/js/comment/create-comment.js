@@ -7,7 +7,7 @@ export default function createComment() {
     jQuery(document).ready(function($) {
         $('.comment-form').on('submit', (e) => {
             e.preventDefault();
-            let commentText = $('#comment_textarea').val();
+            let commentText = $('#comment_textarea-create').val();
             let postId = $('#post_id').val();
 
             $.ajax({
@@ -19,7 +19,7 @@ export default function createComment() {
                     'accept': 'application/json',
                 },
                 success: function (data) {
-                    $('#comment_textarea').val('');
+                    $('#comment_textarea-create').val('');
                     createCommentField(data);
                 },
                 error: function (msg) {

@@ -3,9 +3,11 @@
 namespace App\Services\PostService;
 
 use App\Exceptions\IllegalActException;
+use App\Models\Post;
+use App\Services\PostService\Objects\UsersPostsDTO;
 use App\Services\PostService\Repositories\PostRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use League\Flysystem\Filesystem;
 
 class PostService
 {
@@ -16,16 +18,33 @@ class PostService
         $this->postRepository = $postRepository;
     }
 
-    public function getPostList()
+    /**
+     * @return Collection
+     */
+    public function getPostList(): Collection
     {
         return $this->postRepository->getPosts();
     }
 
-    public function findPostById(int $id)
+    public function getPostListByUserId(int $userId): UsersPostsDTO
+    {
+        $collection = $this->postRepository->getPostsByUserId($userId);
+        return $this->getUsersPostsDTO($collection);
+    }
+
+    /**
+     * @param int $id
+     * @return Post
+     */
+    public function findPostById(int $id): Post
     {
         return $this->postRepository->find($id);
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function createPost(Request $request): void
     {
         $fileName = $request->file('file')->store('uploads', 'public');
@@ -33,7 +52,9 @@ class PostService
     }
 
     /**
-     *
+     * @param Request $request
+     * @param int $id
+     * @return void
      */
     public function updatePost(Request $request, int $id): void
     {
@@ -42,6 +63,9 @@ class PostService
     }
 
     /**
+     * @param Request $request
+     * @param int $id
+     * @return string
      * @throws IllegalActException
      */
     public function deletePost(Request $request, int $id): string
@@ -53,5 +77,14 @@ class PostService
             return $filename;
         }
         throw new IllegalActException('Attempt to delete another\'s data');
+    }
+
+    private function getUsersPostsDTO(Collection|Post $collection): UsersPostsDTO
+    {
+        $user = $collection[0]->user;
+        return new UsersPostsDTO(
+            $user,
+            $collection
+        );
     }
 }

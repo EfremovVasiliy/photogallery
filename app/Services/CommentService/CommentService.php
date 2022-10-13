@@ -38,12 +38,14 @@ class CommentService
 
     /**
      * @param Request $request
-     * @param int $id
-     * @return void
+     * @return Collection
      */
-    public function update(Request $request, int $id): void
+    public function update(Request $request): Collection
     {
-        $this->commentRepository->update($request, $id);
+        $id = $request->json('commentId');
+        $postId = $this->commentRepository->update($request, $id);
+
+        return $this->getCommentsByPostId($postId);
     }
 
     /**

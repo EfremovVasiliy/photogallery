@@ -34,7 +34,12 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
 
     public function update(Request $request, int $id)
     {
-        // TODO: Implement update() method.
+        $comment = $this->comment::find($id);
+        $postId = $comment->post_id;
+        $comment->comment_text = $request->json('commentText');
+        $comment->save();
+
+        return $postId;
     }
 
     public function delete($id)

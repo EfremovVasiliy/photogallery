@@ -9,24 +9,25 @@ export default function deleteComment() {
 
             e.preventDefault();
 
-            const commentId = e.target.querySelector('[data-comment-id]').getAttribute('data-comment-id');
+            if (e.target.classList.contains('comment-delete-form')) {
+                const commentId = e.target.querySelector('[data-comment-id]').getAttribute('data-comment-id');
 
-            $.ajax({
-                url: '/comment-delete',
-                type: 'DELETE',
-                data: JSON.stringify({commentId}),
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
-                    'accept': 'application/json',
-                },
-                success: function (data) {
-                    // console.log(data);
-                    createCommentField(data);
-                },
-                error: function (msg) {
-                    console.log('error');
-                }
-            });
+                $.ajax({
+                    url: '/comment-delete',
+                    type: 'DELETE',
+                    data: JSON.stringify({commentId}),
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+                        'accept': 'application/json',
+                    },
+                    success: function (data) {
+                        createCommentField(data);
+                    },
+                    error: function (msg) {
+                        console.log('error');
+                    }
+                });
+            }
         });
     });
 }

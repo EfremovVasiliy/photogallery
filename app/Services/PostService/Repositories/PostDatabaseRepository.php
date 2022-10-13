@@ -31,7 +31,7 @@ class PostDatabaseRepository implements PostRepositoryInterface
      */
     public function getPosts(): Collection
     {
-        return $this->post::all();
+        return $this->post::with('user')->get();
     }
 
     /**
@@ -60,5 +60,10 @@ class PostDatabaseRepository implements PostRepositoryInterface
         $post->title = $request->input('title');
         $post->description = $request->input('description');
         $post->save();
+    }
+
+    public function getPostsByUserId(int $userId): Collection|Post
+    {
+        return $this->post::whereUserId($userId)->get();
     }
 }
