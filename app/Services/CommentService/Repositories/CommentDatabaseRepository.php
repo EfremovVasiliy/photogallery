@@ -32,7 +32,7 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
         return $request->json('postId');
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): int
     {
         $comment = $this->comment::find($id);
         $postId = $comment->post_id;
@@ -42,7 +42,7 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
         return $postId;
     }
 
-    public function delete($id)
+    public function delete($id): int
     {
         $comment = $this->comment::find($id);
         $postId = $comment->post_id;
