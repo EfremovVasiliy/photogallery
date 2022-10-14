@@ -14,18 +14,38 @@ class LikeDatabaseRepository implements LikeRepositoryInterface
         $this->like = $like;
     }
 
-    public function getLikesCountAtPost(int $postId): int
+    private function checkLike(int $userId, int $postId): bool
     {
-        // TODO: Implement getLikesCountAtPost() method.
+        if ($this->like::where('post_id', $postId)->where('user_id', $userId)->first()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function addLikeToPost(int $userId, int $postId): int
     {
-        // TODO: Implement addLikeToPost() method.
+        if ($this->checkLike($userId, $postId)) {
+            $like = $this->like::create([
+                'post_id' => $postId,
+                'user_id' => $userId
+            ]);
+        }
+
+        $count = $this->like::where('post_id', $postId)->count();
+
+        return $count;
     }
 
     public function removeLikeFromPost(int $userId, int $postId): int
     {
-        // TODO: Implement removeLikeFromPost() method.
+        if (!$this->checkLike($userId, $postId)) {
+            $like = $this->like::where('user_id', $userId)->where('post_id', $postId)->first();
+            $like->delete();
+        }
+
+        $count = $this->like::where('post_id', $postId)->count();
+
+        return $count;
     }
 }

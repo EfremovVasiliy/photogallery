@@ -12,6 +12,7 @@
                 <small>{{$post->user->name}}</small>
                 <p>{{$post->description}}</p>
                 <img class="img-fluid" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->title }}">
+                <p>{{ $post->likes_count }}</p>
                 <hr>
             @endforeach
         </div>

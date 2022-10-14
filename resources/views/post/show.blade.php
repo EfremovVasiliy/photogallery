@@ -11,6 +11,24 @@
             <small>{{$post->user->name}}</small>
             <p>{{$post->description}}</p>
             <img class="img-fluid mb-3" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->description }}">
+            @auth()
+                <button class="btn btn-primary like
+                @foreach(request()->user()->likes as $like)
+                    @if($like->post_id === $post->id)
+                        liked
+                    @endif
+                @endforeach
+                ">
+                    Like <span class="likes-count">{{ $post->likes_count }}</span>
+                </button>
+            @endauth
+
+            @guest()
+                <button class="btn btn-primary">
+                    Like <span class="likes-count">{{ $post->likes_count }}</span>
+                </button>
+            @endguest
+            <br><br>
             @if(request()->user()->id === $post->user->id)
                 <div class="mb-3">
                     <form method="post" action="{{ route('post.destroy', $post->id) }}">

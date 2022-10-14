@@ -26,12 +26,6 @@ class PostService
         return $this->postRepository->getPosts();
     }
 
-    public function getPostListByUserId(int $userId): UsersPostsDTO
-    {
-        $collection = $this->postRepository->getPostsByUserId($userId);
-        return $this->getUsersPostsDTO($collection);
-    }
-
     /**
      * @param int $id
      * @return Post
@@ -77,14 +71,5 @@ class PostService
             return $filename;
         }
         throw new IllegalActException('Attempt to delete another\'s data');
-    }
-
-    private function getUsersPostsDTO(Collection|Post $collection): UsersPostsDTO
-    {
-        $user = $collection[0]->user;
-        return new UsersPostsDTO(
-            $user,
-            $collection
-        );
     }
 }

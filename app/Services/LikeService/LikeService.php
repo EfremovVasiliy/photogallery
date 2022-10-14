@@ -14,12 +14,6 @@ class LikeService
         $this->likeRepository = $likeRepository;
     }
 
-    public function getLikesCountAtPost(Request $request): int
-    {
-        $postId = $request->json('postId');
-        return $this->likeRepository->getLikesCountAtPost($postId);
-    }
-
     public function addLikeToPost(Request $request): int
     {
         $user = $request->user()->id;

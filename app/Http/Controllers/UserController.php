@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\PostService\PostService;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class UserController extends Controller
 
     public function show(int $userId)
     {
-        $posts = $this->postService->getPostListByUserId($userId);
-        return response()->view('user.show', ['posts' => $posts]);
+        $user = User::find($userId);
+        return response()->view('user.show', ['user' => $user]);
     }
 }

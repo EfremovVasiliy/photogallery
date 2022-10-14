@@ -23,7 +23,7 @@ class PostDatabaseRepository implements PostRepositoryInterface
      */
     public function find(int $id): Post
     {
-        return $this->post::find($id);
+        return $this->post::withCount('likes')->find($id);
     }
 
     /**
@@ -31,7 +31,7 @@ class PostDatabaseRepository implements PostRepositoryInterface
      */
     public function getPosts(): Collection
     {
-        return $this->post::with('user')->get();
+        return $this->post::with(['user'])->withCount('likes')->get();
     }
 
     /**
