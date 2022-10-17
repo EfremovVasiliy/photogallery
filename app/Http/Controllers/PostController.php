@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Exceptions\IllegalActException;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
+use App\Models\User;
 use App\Services\CommentService\CommentService;
-use App\Services\LikeService\LikeService;
 use App\Services\PostService\PostService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -19,17 +19,14 @@ class PostController extends Controller
 {
     private PostService $postService;
     private CommentService $commentService;
-    private LikeService $likeService;
 
     public function __construct(
         PostService $postService,
         CommentService $commentService,
-        LikeService $likeService
     )
     {
         $this->postService = $postService;
         $this->commentService = $commentService;
-        $this->likeService = $likeService;
     }
 
     /**
@@ -40,7 +37,6 @@ class PostController extends Controller
     public function index(): Response
     {
         $postList = $this->postService->getPostList();
-//        dd($postList);
         return response()->view('post.index', ['postList' => $postList]);
     }
 

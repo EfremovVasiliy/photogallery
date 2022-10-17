@@ -37,12 +37,12 @@ class PostService
 
     /**
      * @param Request $request
-     * @return void
+     * @return Post
      */
-    public function createPost(Request $request): void
+    public function createPost(Request $request): Post
     {
-        $fileName = $request->file('file')->store('uploads', 'public');
-        $this->postRepository->create($request, $fileName);
+        $fileName = $request->file->store('uploads', 'public');
+        return $this->postRepository->create($request, $fileName);
     }
 
     /**

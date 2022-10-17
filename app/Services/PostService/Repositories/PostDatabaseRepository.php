@@ -39,12 +39,12 @@ class PostDatabaseRepository implements PostRepositoryInterface
      * @param string $filename
      * @return void
      */
-    public function create(Request $request, string $filename): void
+    public function create(Request $request, string $filename): Post
     {
-        $this->post::create([
+        return $this->post::create([
             'user_id' => $request->user()->id,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
+            'title' => $request->title,
+            'description' => $request->description,
             'file_path' => $filename
         ]);
     }

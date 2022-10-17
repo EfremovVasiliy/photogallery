@@ -21,7 +21,7 @@ class PostFactory extends Factory
             'title' => fake()->text(30),
             'user_id' => mt_rand(1, 10),
             'description' => fake()->text(130),
-            'file_path' => 'uploads/dLll55WVKlTbEAGyTi9X5dB1iLDoVxFC1B3yiXH8.jpg'
+            'file_path' => 'uploads/j8G1bPDD8p36B1JqNEwI47N9k43zsW4YQ17LRf6F.jpg'
         ];
     }
 }
