@@ -19,12 +19,14 @@ class CommentController extends Controller
 
     public function create(CreateCommentRequest $request)
     {
-        return response()->json($this->commentService->create($request));
+        $comment = $this->commentService->create($request);
+        return response()->json($this->commentService->getCommentsByPostId($request, $comment->post_id));
     }
 
     public function update(UpdateCommentRequest $request)
     {
-        return response()->json($this->commentService->update($request));
+        $comment = $this->commentService->update($request);
+        return response()->json($this->commentService->getCommentsByPostId($request, $comment->post_id));
     }
 
     public function delete(DeleteCommentRequest $request)

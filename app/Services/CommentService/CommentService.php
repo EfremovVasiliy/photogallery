@@ -2,6 +2,7 @@
 
 namespace App\Services\CommentService;
 
+use App\Models\Comment;
 use App\Services\CommentService\Objects\CommentDTO;
 use App\Services\CommentService\Repositories\CommentRepositoryInterface;
 use Illuminate\Http\Request;
@@ -17,35 +18,33 @@ class CommentService
     }
 
     /**
-     * @param int $id
+     * @param Request $request
+     * @param int $postId
      * @return Collection
      */
-    public function getCommentsByPostId(int $id): Collection
+    public function getCommentsByPostId(Request $request, int $postId): Collection
     {
-        $collection = $this->commentRepository->getCommentsByPostId($id);
-        return $this->generateCommentDTOCollection($collection);
+        $collection = $this->commentRepository->getCommentsByPostId($postId);
+        return $this->generateCommentDTOCollection($request, $collection);
     }
 
     /**
      * @param Request $request
-     * @return Collection
+     * @return Comment
      */
-    public function create(Request $request): Collection
+    public function create(Request $request): Comment
     {
-        $postId = $this->commentRepository->create($request);
-        return $this->getCommentsByPostId($postId);
+        return $this->commentRepository->create($request);
     }
 
     /**
      * @param Request $request
-     * @return Collection
+     * @return Comment
      */
-    public function update(Request $request): Collection
+    public function update(Request $request): Comment
     {
         $id = $request->json('commentId');
-        $postId = $this->commentRepository->update($request, $id);
-
-        return $this->getCommentsByPostId($postId);
+        return $this->commentRepository->update($request, $id);
     }
 
     /**
@@ -55,20 +54,21 @@ class CommentService
     public function delete(Request $request): Collection
     {
         $postId = $this->commentRepository->delete($request->json('commentId'));
-        return $this->getCommentsByPostId($postId);
+        return $this->getCommentsByPostId($request, $postId);
     }
 
     /**
+     * @param Request $request
      * @param Collection $collection
      * @return Collection
      */
-    private function generateCommentDTOCollection(Collection $collection): Collection
+    private function generateCommentDTOCollection(Request $request, Collection $collection): Collection
     {
         $comments = collect();
         foreach ($collection as $item) {
             $comment = new CommentDTO(
                 $item->id,
-                request()->user()->id,
+                $request->user()->id,
                 $item->comment_text,
                 $item->user->name,
                 $item->user->id,

@@ -68,10 +68,10 @@ class PostController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show(int $id): Response
+    public function show(Request $request, int $id): Response
     {
         $post = $this->postService->findPostById($id);
-        $comments = $this->commentService->getCommentsByPostId($id);
+        $comments = $this->commentService->getCommentsByPostId($request, $id);
         return response()->view('post.show', ['post' => $post, 'comments' => $comments]);
     }
 

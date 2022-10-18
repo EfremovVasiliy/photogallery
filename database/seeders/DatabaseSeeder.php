@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Post::factory(10)->create();
         Comment::factory(50)->create();
-        Like::factory(10)->create();
+        Like::factory(15)->create();
     }
 }
