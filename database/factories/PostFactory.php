@@ -15,11 +15,11 @@ class PostFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition($userId = null)
     {
         return [
             'title' => fake()->text(30),
-            'user_id' => mt_rand(1, 10),
+            'user_id' => $userId ? $userId : mt_rand(1, 10),
             'description' => fake()->text(130),
             'file_path' => 'uploads/j8G1bPDD8p36B1JqNEwI47N9k43zsW4YQ17LRf6F.jpg'
         ];

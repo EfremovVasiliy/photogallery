@@ -4,7 +4,6 @@ namespace App\Services\PostService;
 
 use App\Exceptions\IllegalActException;
 use App\Models\Post;
-use App\Services\PostService\Objects\UsersPostsDTO;
 use App\Services\PostService\Repositories\PostRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -48,23 +47,22 @@ class PostService
     /**
      * @param Request $request
      * @param int $id
-     * @return void
+     * @return Post
      */
-    public function updatePost(Request $request, int $id): void
+    public function updatePost(Request $request, int $id): Post
     {
-        $post = $this->findPostById($id);
-        $this->postRepository->update($request, $id);
+        return $this->postRepository->update($request, $id);
     }
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param int $postId
      * @return string
      * @throws IllegalActException
      */
-    public function deletePost(Request $request, int $id): string
+    public function deletePost(Request $request, int $postId): string
     {
-        $post = $this->findPostById($id);
+        $post = $this->findPostById($postId);
         if ($request->user()->id === $post->user_id) {
             $filename = $post->file_path;
             $post->delete();

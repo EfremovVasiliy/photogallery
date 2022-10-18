@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\IllegalActException;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\PostService\PostService;
@@ -28,6 +29,7 @@ class PostServiceTest extends TestCase
 
     public function test_getPostList(): void
     {
+        Post::factory(10)->create();
         $collection = $this->postService->getPostList();
 
         $this->assertInstanceOf(Collection::class, $collection);
@@ -50,13 +52,59 @@ class PostServiceTest extends TestCase
 
         $request = new Request();
         $request->setUserResolver(function() use ($user) { return $user; });
-        $request->title = 'title';
-        $request->description = 'description';
+        $request->title = $title = 'title';
+        $request->description = $description = 'description';
         $request->file = $file;
 
         $post = $this->postService->createPost($request);
 
         $this->assertEquals($user->id, $post->user_id);
+        $this->assertEquals($title, $post->title);
+        $this->assertEquals($description, $post->description);
         Storage::disk('public')->assertExists($filename)->delete($filename);
+    }
+
+    public function test_updatePost(): void
+    {
+        $post = Post::factory()->create();
+
+        $request = new Request();
+        $request->title = $title = 'Updated title';
+        $request->description = $description = 'Updated description';
+
+        $updatedPost = $this->postService->updatePost($request, $post->id);
+
+        $this->assertEquals($title, $updatedPost->title);
+        $this->assertEquals($description, $updatedPost->description);
+    }
+
+    public function test_deletePostByAuthor(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+
+        $post->user_id = $user->id;
+        $post->save();
+
+        $request = new Request();
+        $request->setUserResolver(function() use ($user) { return $user; });
+
+        $filename = $this->postService->deletePost($request, $post->id);
+
+        $this->assertEquals($post->file_path, $filename);
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+    }
+
+    public function test_deletePostNotByAuthor(): void
+    {
+        $post = Post::factory()->create();
+        $user = User::factory()->create();
+
+        $request = new Request();
+        $request->setUserResolver(function() use ($user) { return $user; });
+
+        $this->expectException(IllegalActException::class);
+
+        $this->postService->deletePost($request, $post->id);
     }
 }

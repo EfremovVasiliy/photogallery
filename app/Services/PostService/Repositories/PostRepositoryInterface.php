@@ -12,5 +12,5 @@ interface PostRepositoryInterface
     public function getPosts(): Collection;
     public function getPostsByUserId(int $userId): Collection|Post;
     public function create(Request $request, string $filename): Post;
-    public function update(Request $request, int $id): void;
+    public function update(Request $request, int $id): Post;
 }

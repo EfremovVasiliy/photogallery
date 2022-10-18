@@ -37,7 +37,7 @@ class PostDatabaseRepository implements PostRepositoryInterface
     /**
      * @param Request $request
      * @param string $filename
-     * @return void
+     * @return Post
      */
     public function create(Request $request, string $filename): Post
     {
@@ -52,14 +52,16 @@ class PostDatabaseRepository implements PostRepositoryInterface
     /**
      * @param Request $request
      * @param int $id
-     * @return void
+     * @return Post
      */
-    public function update(Request $request, int $id): void
+    public function update(Request $request, int $id): Post
     {
         $post = $this->post::find($id);
-        $post->title = $request->input('title');
-        $post->description = $request->input('description');
+        $post->title = $request->title;
+        $post->description = $request->description;
         $post->save();
+
+        return $post;
     }
 
     public function getPostsByUserId(int $userId): Collection|Post
