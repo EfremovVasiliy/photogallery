@@ -33,7 +33,7 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required|string',
+            'comment' => 'required|string|max:2000',
             'post_id' => 'required|int'
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Services\PostService;
 
 use App\Exceptions\IllegalActException;
 use App\Models\Post;
+use App\Services\PostService\Objects\PostDTO;
 use App\Services\PostService\Repositories\PostRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -41,7 +42,13 @@ class PostService
     public function createPost(Request $request): Post
     {
         $fileName = $request->file->store('uploads', 'public');
-        return $this->postRepository->create($request, $fileName);
+        $postDTO = new PostDTO(
+            title: $request->title,
+            userId: $request->user()->id,
+            description: $request->description,
+            file_path: $fileName
+        );
+        return $this->postRepository->create($postDTO);
     }
 
     /**
@@ -51,7 +58,13 @@ class PostService
      */
     public function updatePost(Request $request, int $id): Post
     {
-        return $this->postRepository->update($request, $id);
+        $postDTO = new PostDTO(
+            id: $id,
+            title: $request->title,
+            userId: $request->user()->id,
+            description: $request->description,
+        );
+        return $this->postRepository->update($postDTO);
     }
 
     /**

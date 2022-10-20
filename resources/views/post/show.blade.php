@@ -44,7 +44,7 @@
                         <div class="comment-item-{{ $comment->id }}">
                             <div class="d-flex justify-content-between">
                                 <small>{{ $comment->authorName }}</small>
-                                @if($comment->userId === $comment->authorId)
+                                @if($comment->requestUserId === $comment->authorId)
                                     <div class="actions d-flex justify-content-between mb-1">
                                         <small class="me-1">
                                             <form class="comment-update-form" action="{{ route('comment.update')  }}">

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\IllegalActException;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
-use App\Models\User;
 use App\Services\CommentService\CommentService;
 use App\Services\PostService\PostService;
 use Illuminate\Contracts\Foundation\Application;
@@ -20,10 +19,7 @@ class PostController extends Controller
     private PostService $postService;
     private CommentService $commentService;
 
-    public function __construct(
-        PostService $postService,
-        CommentService $commentService,
-    )
+    public function __construct(PostService $postService, CommentService $commentService)
     {
         $this->postService = $postService;
         $this->commentService = $commentService;
@@ -65,6 +61,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param int $id
      * @return Response
      */
@@ -72,6 +69,7 @@ class PostController extends Controller
     {
         $post = $this->postService->findPostById($id);
         $comments = $this->commentService->getCommentsByPostId($request, $id);
+//        dd($comments);
         return response()->view('post.show', ['post' => $post, 'comments' => $comments]);
     }
 

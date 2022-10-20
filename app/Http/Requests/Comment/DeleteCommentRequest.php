@@ -32,7 +32,7 @@ class DeleteCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment_id' => 'required'
+            'comment_id' => 'required|int'
         ];
     }
 }

@@ -35,7 +35,7 @@ class CommentServiceTest extends TestCase
         $comments = $this->commentService->getCommentsByPostId($request, $id = 1);
 
         $this->assertInstanceOf(Collection::class, $comments);
-        $this->assertEquals($user->id, $comments[0]->userId);
+        $this->assertEquals($user->id, $comments[0]->requestUserId);
     }
 
     public function test_create(): void

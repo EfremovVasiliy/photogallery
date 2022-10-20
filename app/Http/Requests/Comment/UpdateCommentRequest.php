@@ -33,7 +33,7 @@ class UpdateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment_text' => 'required|string',
+            'comment_text' => 'required|string|max:2000',
             'id' => 'required|int'
         ];
     }

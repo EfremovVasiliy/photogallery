@@ -3,9 +3,8 @@
 namespace App\Services\CommentService\Repositories;
 
 use App\Models\Comment;
-use App\Models\User;
+use App\Services\CommentService\Objects\CommentDTO;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class CommentDatabaseRepository implements CommentRepositoryInterface
 {
@@ -25,20 +24,27 @@ class CommentDatabaseRepository implements CommentRepositoryInterface
         return $this->comment::with('user')->where('post_id', $postId)->get();
     }
 
-    public function create(Request $request): Comment
+    /**
+     * @param CommentDTO $commentDTO
+     * @return Comment
+     */
+    public function create(CommentDTO $commentDTO): Comment
     {
         return $this->comment::create([
-            'user_id' => $request->user()->id,
-            'post_id' => $request->json('postId'),
-            'comment_text' => $request->json('commentText'),
+            'user_id' => $commentDTO->requestUserId,
+            'post_id' => $commentDTO->postId,
+            'comment_text' => $commentDTO->commentText,
         ]);
     }
 
-    public function update(Request $request, int $id): Comment
+    /**
+     * @param CommentDTO $commentDTO
+     * @return Comment
+     */
+    public function update(CommentDTO $commentDTO): Comment
     {
-        $comment = $this->comment::find($id);
-        $postId = $comment->post_id;
-        $comment->comment_text = $request->json('commentText');
+        $comment = $this->comment::find($commentDTO->id);
+        $comment->comment_text = $commentDTO->commentText;
         $comment->save();
 
         return $comment;

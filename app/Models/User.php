@@ -41,6 +41,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $posts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
+ * @property-read int|null $likes_count
  */
 class User extends Authenticatable
 {

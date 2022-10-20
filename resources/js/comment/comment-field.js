@@ -14,7 +14,7 @@ export default function createCommentField(data) {
     } else {
         data.forEach((item) => {
             let forms = '';
-            if (item.userId === item.authorId) {
+            if (item.requestUserId === item.authorId) {
                 forms = `
                 <div class="actions d-flex justify-content-between mb-1">
                     <small class="me-1">

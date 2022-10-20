@@ -34,7 +34,12 @@ class CommentService
      */
     public function create(Request $request): Comment
     {
-        return $this->commentRepository->create($request);
+        $comment = new CommentDTO(
+            requestUserId: $request->user()->id,
+            postId: $request->json('postId'),
+            commentText: $request->json('commentText'),
+        );
+        return $this->commentRepository->create($comment);
     }
 
     /**
@@ -43,8 +48,11 @@ class CommentService
      */
     public function update(Request $request): Comment
     {
-        $id = $request->json('commentId');
-        return $this->commentRepository->update($request, $id);
+        $commentDTO = new CommentDTO(
+            id: $request->json('commentId'),
+            commentText: $request->json('commentText'),
+        );
+        return $this->commentRepository->update($commentDTO);
     }
 
     /**
@@ -67,12 +75,13 @@ class CommentService
         $comments = collect();
         foreach ($collection as $item) {
             $comment = new CommentDTO(
-                $item->id,
-                $request->user()->id,
-                $item->comment_text,
-                $item->user->name,
-                $item->user->id,
-                $item->created_at
+                id: $item->id,
+                requestUserId:  $request->user()->id,
+                postId: $item->post_id,
+                commentText: $item->comment_text,
+                authorName: $item->user->name,
+                authorId: $item->user->id,
+                date: $item->created_at
             );
             $comments->push($comment);
         }
