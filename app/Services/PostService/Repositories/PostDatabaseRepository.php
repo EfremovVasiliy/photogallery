@@ -29,7 +29,7 @@ class PostDatabaseRepository implements PostRepositoryInterface
      */
     public function getPosts(): Collection
     {
-        return $this->post::with(['user'])->withCount('likes')->get();
+        return $this->post::with(['user'])->withCount('likes')->withCount('comments')->get();
     }
 
     /**

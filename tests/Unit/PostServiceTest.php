@@ -66,11 +66,14 @@ class PostServiceTest extends TestCase
 
     public function test_updatePost(): void
     {
+        $user = User::factory()->create();
         $post = Post::factory()->create();
 
         $request = new Request();
         $request->title = $title = 'Updated title';
         $request->description = $description = 'Updated description';
+
+        $request->setUserResolver(function() use ($user) { return $user; });
 
         $updatedPost = $this->postService->updatePost($request, $post->id);
 

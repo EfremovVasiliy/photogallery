@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +16,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 require __DIR__.'/auth.php';
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('post', PostController::class)->middleware(['auth']);
 
-Route::resource('post', \App\Http\Controllers\PostController::class)->middleware(['auth']);
+Route::get('/', 'App\Http\Controllers\PostController@index')->name('post.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/comment-create', 'App\Http\Controllers\CommentController@create')->name('comment.create');
@@ -40,4 +35,3 @@ Route::get('/user/{id}', 'App\Http\Controllers\UserController@show')->name('user
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -8,8 +8,12 @@
     <div class="p-3">
         <div class="col-lg-6 m-auto">
             <h2>{{$post->title}}</h2>
-            <small>{{$post->user->name}}</small>
-            <p>{{$post->description}}</p>
+            <small>
+                <a class="text-decoration-none " href="{{ route('user.show', $post->user_id) }}">
+                    {{$post->user->name}}
+                </a>
+            </small>
+            <p class="mt-3">{{$post->description}}</p>
             <img class="img-fluid mb-3" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->description }}">
             @auth()
                 <button class="btn btn-primary like
@@ -43,7 +47,11 @@
                     @foreach($comments as $comment)
                         <div class="comment-item-{{ $comment->id }}">
                             <div class="d-flex justify-content-between">
-                                <small>{{ $comment->authorName }}</small>
+                                <small>
+                                    <a class="text-decoration-none" href="{{ route('user.show', $comment->authorId) }}">
+                                        {{ $comment->authorName }}
+                                    </a>
+                                </small>
                                 @if($comment->requestUserId === $comment->authorId)
                                     <div class="actions d-flex justify-content-between mb-1">
                                         <small class="me-1">
@@ -84,8 +92,8 @@
                 <form class="comment-form" action="{{ route('comment.create') }}" method="post">
                     @csrf
                     <div class="w-100">
-                        <textarea id="comment_textarea-create" placeholder="Your comment" name="comment" rows="2"
-                                  class="form-control"></textarea>
+                    <textarea id="comment_textarea-create" placeholder="Your comment" name="comment" rows="2"
+                              class="form-control"></textarea>
                         <input type="hidden" id="post_id" name="post_id" value="{{ $post->id }}"><br>
                     </div>
 

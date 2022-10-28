@@ -69,7 +69,7 @@ class PostController extends Controller
     {
         $post = $this->postService->findPostById($id);
         $comments = $this->commentService->getCommentsByPostId($request, $id);
-//        dd($comments);
+
         return response()->view('post.show', ['post' => $post, 'comments' => $comments]);
     }
 

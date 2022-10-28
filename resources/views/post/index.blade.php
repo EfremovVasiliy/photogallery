@@ -9,10 +9,14 @@
         <div class="col-lg-6 m-auto">
             @foreach($postList as $post)
                 <h3><a href={{ url("/post/{$post->id}") }}>{{$post->title}}</a></h3>
-                <small>{{$post->user->name}}</small>
+                <small><a class="text-decoration-none" href="{{ route('user.show', $post->user_id) }}">{{$post->user->name}}</a></small>
                 <p>{{$post->description}}</p>
                 <img class="img-fluid" src="{{ asset('/storage/'. $post->file_path) }}" alt="{{ $post->title }}">
-                <p>{{ $post->likes_count }}</p>
+                <div class="pt-2 d-flex justify-content-between">
+                    <small >Likes: {{ $post->likes_count }}</small>
+                    <small >Comments: {{ $post->comments_count }}</small>
+                </div>
+
                 <hr>
             @endforeach
         </div>
