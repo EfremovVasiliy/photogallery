@@ -10,7 +10,7 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: D:\Projects\photogallery
+    - map: /path_to/photogallery
       to: /var/www/photogallery
 
 sites:
