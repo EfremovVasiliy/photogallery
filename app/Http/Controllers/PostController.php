@@ -33,7 +33,6 @@ class PostController extends Controller
     public function index(): Response
     {
         $postList = $this->postService->getPostList();
-//        dd($postList);
         return response()->view('post.index', ['postList' => $postList]);
     }
 

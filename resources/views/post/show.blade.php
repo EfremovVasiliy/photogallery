@@ -26,20 +26,19 @@
                     Like <span class="likes-count">{{ $post->likes_count }}</span>
                 </button>
             @endauth
-
-            @guest()
-                <button class="btn btn-primary">
-                    Like <span class="likes-count">{{ $post->likes_count }}</span>
-                </button>
-            @endguest
             <br><br>
             @if(request()->user()->id === $post->user->id)
-                <div class="mb-3">
-                    <form method="post" action="{{ route('post.destroy', $post->id) }}">
-                        @method('DELETE')
-                        @csrf
-                        <input type="submit" value="Delete post" class="btn btn-danger">
-                    </form>
+                <div class="d-flex justify-content-between">
+                    <div class="mb-3">
+                        <form method="post" action="{{ route('post.destroy', $post->id) }}">
+                            @method('DELETE')
+                            @csrf
+                            <input type="submit" value="Delete post" class="btn btn-danger">
+                        </form>
+                    </div>
+                    <div class="mb-3">
+                        <a href="{{ route('post.edit', $post->id) }}" class="btn btn-primary">Update post</a>
+                    </div>
                 </div>
             @endif
             <div class="comment-field">
